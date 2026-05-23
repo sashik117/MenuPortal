@@ -1,86 +1,116 @@
-﻿# Digital Menu Portal
+# Digital Menu Portal
 
-B2B SaaS-РїРѕСЂС‚Р°Р» РґР»СЏ СЂРµСЃС‚РѕСЂР°РЅС–РІ: РІР»Р°СЃРЅРёРє Р·Р°РєР»Р°РґСѓ СЂРµС”СЃС‚СЂСѓС”С‚СЊСЃСЏ, РѕС‚СЂРёРјСѓС” trial РЅР° 7 РґРЅС–РІ Р°Р±Рѕ РїРµСЂРµС…РѕРґРёС‚СЊ РґРѕ РѕРїР»Р°С‚Рё, РєРµСЂСѓС” РјРµРЅСЋ РІ Р°РґРјС–РЅС†С–, Р° РіРѕСЃС‚С– РІС–РґРєСЂРёРІР°СЋС‚СЊ РєРѕРјРїР°РєС‚РЅРµ РїСѓР±Р»С–С‡РЅРµ РјРµРЅСЋ Р· РєР°С‚РµРіРѕСЂС–СЏРјРё, РїС–РґРєР°С‚РµРіРѕСЂС–СЏРјРё, Р»Р°Р№РєР°РјРё, РЅРѕРІРёРЅРєР°РјРё, РіРѕСЃС‚СЊРѕРІРёРј С‡РµРєРѕРј С– С–РЅС„РѕСЂРјР°С†С–Р№РЅРѕСЋ РїР°РЅРµР»Р»СЋ Р·Р°РєР»Р°РґСѓ.
+![React](https://img.shields.io/badge/React-18-111827?style=for-the-badge&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-6-111827?style=for-the-badge&logo=typescript)
+![Laravel](https://img.shields.io/badge/Laravel-API-111827?style=for-the-badge&logo=laravel)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-CSS-111827?style=for-the-badge&logo=tailwindcss)
+![MySQL](https://img.shields.io/badge/MySQL-Database-111827?style=for-the-badge&logo=mysql)
 
-## Stack
+Premium fullstack SaaS platform for restaurants that need a fast, mobile-first digital menu with owner dashboards, realtime availability controls, guest likes, feedback, delivery orders, and subscription payments.
 
-- Backend: Laravel 12, PHP 8.4, Sanctum, MySQL
-- Frontend: React 18, TypeScript, Vite, Tailwind CSS, Framer Motion
-- Architecture: monorepo, API-first, frontend and backend communicate through JSON REST endpoints
+The project is built as a production-style monorepo with a React client and Laravel REST API. It is designed to look and behave like a real B2B product, not a training exercise.
 
-## Run Locally
+## ✨ Features
 
-Start Laravel API and MySQL:
+- Restaurant owner registration with trial or payment flow
+- Mobile-first interactive restaurant menu
+- Category and subcategory navigation
+- Dish cards with vertical photos, price, ingredients, weight, likes, and add-to-check button
+- Guest favorites stored in browser localStorage
+- Popular dishes section sorted by likes
+- Waiter-friendly guest check and delivery checkout path
+- Admin dashboard for menu, dish, category, and venue settings
+- Instant optimistic UI for dish availability changes
+- Image upload and crop flow for dish photos
+- Venue info panel with WiFi, working hours, phone, address, delivery, and feedback
+- Platform admin area for managing restaurants, bans, statuses, and subscriptions
+- Monobank payment invoice endpoint
+- Telegram notifications for feedback and delivery orders
+- Google Places-ready address autocomplete
+- Fully responsive layout for mobile, tablet, and desktop
 
-```powershell
-docker compose up -d --build
-```
+## 🧱 Tech Stack
 
-Start React:
+**Frontend**
 
-```powershell
-cd frontend
-npm run dev -- --host 127.0.0.1
-```
+- React 18
+- TypeScript
+- Vite
+- Tailwind CSS
+- Framer Motion
+- Lucide React icons
 
-Local URLs:
+**Backend**
+
+- PHP 8.4
+- Laravel
+- Laravel Sanctum
+- REST API architecture
+- Telegram Bot API integration
+- Monobank acquiring integration
+
+**Database and Infrastructure**
+
+- MySQL 8
+- Docker Compose
+- Local file storage for uploaded images
+
+## 🖼️ Screenshots
+
+### Home Page
+
+![Home page](screenshots/home-page.png)
+
+### Admin Dashboard
+
+![Admin dashboard](screenshots/admin-dashboard.png)
+
+### Mobile Menu
+
+![Mobile menu](screenshots/mobile-view.png)
+
+## 🧭 Architecture
 
 ```text
-Landing:   http://127.0.0.1:5173/
-Demo menu: http://127.0.0.1:5173/r/demo-bistro
-Delivery:  http://127.0.0.1:5173/r/demo-bistro/delivery
-Feedback:  http://127.0.0.1:5173/r/demo-bistro/feedback
-Admin:     http://127.0.0.1:5173/admin
-API:       http://127.0.0.1:8000/api
+digital-menu-portal/
+├── frontend/             # React + TypeScript client
+│   ├── src/
+│   ├── public/
+│   └── package.json
+│
+├── backend/              # Laravel REST API
+│   ├── app/
+│   ├── database/
+│   ├── routes/
+│   └── composer.json
+│
+├── screenshots/          # Portfolio screenshots
+├── docker-compose.yml
+├── package.json          # Root helper scripts
+├── README.md
+└── .gitignore
 ```
 
-If port `5173` is busy, Vite will choose the next free port, for example `5174`.
-
-Seeded local admin:
-
-```text
-login: admin
-password: admin12345
-```
-
-Seeded platform admin:
-
-```text
-login: superadmin
-password: superadmin12345
-```
-
-## Main API
+## 🔌 API Highlights
 
 ```text
 POST   /api/auth/login
-POST   /api/auth/logout
 POST   /api/owners/register
-POST   /api/contact
 GET    /api/company
 PATCH  /api/company
 
-GET    /api/restaurants/{company:slug}/menu
-GET    /api/restaurants/{company:slug}/menu/version
-POST   /api/restaurants/{company:slug}/feedback
-POST   /api/restaurants/{company:slug}/delivery-orders
+GET    /api/restaurants/{slug}/menu
+GET    /api/restaurants/{slug}/menu/version
+POST   /api/restaurants/{slug}/feedback
+POST   /api/restaurants/{slug}/delivery-orders
 POST   /api/dishes/{dish}/like
 
-POST   /api/categories
-PATCH  /api/categories/{category}
-DELETE /api/categories/{category}
-POST   /api/subcategories
-PATCH  /api/subcategories/{subcategory}
-DELETE /api/subcategories/{subcategory}
-GET    /api/dishes
 POST   /api/dishes
 PATCH  /api/dishes/{dish}
 PATCH  /api/dishes/{dish}/toggle
 DELETE /api/dishes/{dish}
-POST   /api/uploads/dish-image
-POST   /api/uploads/company-avatar
+
 POST   /api/payments/subscription
-GET    /api/payments/{paymentInvoice}
 POST   /api/payments/monobank/webhook
 
 GET    /api/platform/companies
@@ -88,61 +118,91 @@ PATCH  /api/platform/companies/{company}
 DELETE /api/platform/companies/{company}
 ```
 
-## Notes
+## 🚀 Getting Started
 
-- Trial access is stored on `companies.trial_ends_at`; expired restaurants receive `402 subscription_required` on the public menu endpoint.
-- Unavailable dishes are fully hidden from the public menu.
-- Guest likes use `localStorage` on the frontend and a `visitor_key` uniqueness rule in Laravel.
-- Guest check selections are stored in `localStorage`; visitors can show the check to a waiter or continue to home delivery.
-- Menu screens use cached data plus a lightweight `menu_version` realtime check, so admin changes appear without manual refresh.
-- Owners can manage categories, subcategories, dish weight/volume, dish photos, and the restaurant avatar from the admin UI.
-- Contact messages, guest feedback ratings, and delivery orders are saved in MySQL. Email sending needs SMTP plus `CONTACT_MAIL_TO` / company `feedback_email`.
-- Restaurant feedback and delivery orders can also be pushed to Telegram. Set `TELEGRAM_BOT_TOKEN` on the Laravel API container and fill `telegram_chat_id` in the venue settings.
-- Google Places autocomplete is optional on the frontend. Set `VITE_GOOGLE_PLACES_API_KEY` before starting Vite; without it, addresses still become Google Maps search links.
-- The API container keeps Laravel code and Composer vendor files inside the Docker image for fast Windows local runtime. Uploaded public files and logs remain mounted from `backend/storage`.
-- Real subscription payments use Monobank acquiring. Set `MONOBANK_TOKEN`, `APP_URL`, and `FRONTEND_URL`; for live webhooks, `APP_URL` must be publicly reachable, not plain localhost.
+### 1. Clone the repository
 
-## Environment Keys
+```bash
+git clone https://github.com/sashik117/MenuPortal.git
+cd MenuPortal
+```
 
-```text
-Backend payment:
-MONOBANK_TOKEN=
-MONOBANK_BASE_URL=https://api.monobank.ua
-MONOBANK_VERIFY_WEBHOOK_SIGNATURE=true
-PAYMENT_PROVIDER=monobank
-PAYMENT_CURRENCY=980
-FRONTEND_URL=http://127.0.0.1:5174
+### 2. Configure environment files
 
-Backend notifications:
-TELEGRAM_BOT_TOKEN=
-RESEND_API_KEY=
-CONTACT_MAIL_TO=
-MAIL_MAILER=log
-# use MAIL_MAILER=resend only after the API key and recipient address are confirmed
-MAIL_HOST=
-MAIL_PORT=
-MAIL_USERNAME=
-MAIL_PASSWORD=
-MAIL_FROM_ADDRESS=
+```bash
+cp backend/.env.example backend/.env
+cp frontend/.env.example frontend/.env
+```
 
-Frontend:
+Set the required keys when you need external integrations:
+
+```env
 VITE_API_URL=http://127.0.0.1:8000/api
 VITE_GOOGLE_PLACES_API_KEY=
+
+TELEGRAM_BOT_TOKEN=
+MONOBANK_TOKEN=
+RESEND_API_KEY=
+CONTACT_MAIL_TO=
 ```
 
-## Checks
+### 3. Start backend and database
 
-Backend:
-
-```powershell
-docker compose exec api php artisan test
+```bash
+npm run docker:up
 ```
 
-Frontend:
+### 4. Start frontend
 
-```powershell
-cd frontend
-npm run lint
-npm run build
+```bash
+npm run dev:client
 ```
 
+The app will be available at:
+
+```text
+Frontend: http://127.0.0.1:5174
+API:      http://127.0.0.1:8000/api
+```
+
+## 🔐 Demo Accounts
+
+```text
+Restaurant owner:
+login:    admin
+password: admin12345
+
+Platform admin:
+login:    superadmin
+password: superadmin12345
+```
+
+## ✅ Quality Checks
+
+```bash
+npm run lint:client
+npm run build:client
+npm run test:server
+```
+
+## 🧩 Product Logic
+
+- Restaurants can start a 7-day trial or move into a payment flow.
+- Expired trial restaurants receive a subscription-required response.
+- Hidden dishes are removed from the public menu instead of being greyed out.
+- Guest likes are stored both locally and in the API to prevent easy repeated likes.
+- Admin availability changes use optimistic UI for instant visual feedback.
+- Public menus use cached data and menu version checks for lightweight realtime updates.
+
+## 🌍 Live Demo
+
+Deployment is planned. The project is already structured for separate frontend and backend deployment.
+
+## 👩‍💻 Contact
+
+- GitHub: [@sashik117](https://github.com/sashik117)
+- Telegram: `@sashik117`
+
+---
+
+Built as a portfolio-ready fullstack SaaS project with a clean architecture, premium UI direction, and real business logic.

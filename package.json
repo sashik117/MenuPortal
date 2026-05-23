@@ -1,0 +1,25 @@
+{
+  "name": "digital-menu-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fullstack SaaS platform for restaurants to manage digital menus, availability, delivery orders, feedback, and subscriptions.",
+  "scripts": {
+    "dev:client": "npm --prefix frontend run dev -- --host 127.0.0.1 --port 5174",
+    "build:client": "npm --prefix frontend run build",
+    "lint:client": "npm --prefix frontend run lint",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down",
+    "test:server": "docker compose exec api php artisan test"
+  },
+  "keywords": [
+    "react",
+    "typescript",
+    "laravel",
+    "tailwindcss",
+    "saas",
+    "restaurant",
+    "digital-menu"
+  ],
+  "author": "Oleksandra Sukhova",
+  "license": "MIT"
+}
