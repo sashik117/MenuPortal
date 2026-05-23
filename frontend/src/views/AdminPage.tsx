@@ -1464,22 +1464,22 @@ function AvailabilityToggle({
   onToggle: () => void
 }) {
   return (
-    <div className="mt-2 flex flex-col gap-1">
+    <div className="mt-2 flex flex-col items-start gap-1">
       <motion.button
         type="button"
         whileTap={{ scale: 0.95 }}
         disabled={isPending}
         onClick={onToggle}
-        className={`relative h-9 w-full max-w-24 rounded-md border transition ${
+        className={`relative h-7 w-14 rounded-full border transition ${
           isAvailable ? 'border-neutral-950 bg-neutral-950' : 'border-neutral-300 bg-neutral-200'
         }`}
         aria-label={`Перемкнути ${label}`}
       >
         <motion.span
           layout
-          animate={{ x: isAvailable ? 62 : 4 }}
+          animate={{ x: isAvailable ? 28 : 4 }}
           transition={{ duration: 0.22 }}
-          className="absolute left-0 top-[3px] h-7 w-7 rounded-sm bg-white shadow-sm"
+          className="absolute left-0 top-[3px] h-5 w-5 rounded-full bg-white shadow-sm"
         />
       </motion.button>
       <span className="text-xs font-semibold leading-4 text-neutral-700">
