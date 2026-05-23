@@ -19,7 +19,7 @@ const company = {
   name: 'Demo Bistro',
   slug: 'demo-bistro',
   venue_type: 'restaurant',
-  avatar_url: 'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&w=400&q=80',
+  avatar_url: '/demo-images/venue.jpg',
   status: 'trialing',
   menu_version: 7,
   trial_ends_at: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
@@ -68,7 +68,7 @@ const categories = [
         name: 'Margherita',
         description: 'Tomato sauce, mozzarella, basil, olive oil',
         weight: '430 g',
-        image_url: 'https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?auto=format&fit=crop&w=900&q=80',
+        image_url: '/demo-images/margherita.jpg',
         price: '245.00',
         is_available: true,
         likes_count: 19,
@@ -84,7 +84,7 @@ const categories = [
         name: 'Diavola',
         description: 'Spicy salami, mozzarella, tomato sauce, chili oil',
         weight: '470 g',
-        image_url: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?auto=format&fit=crop&w=900&q=80',
+        image_url: '/demo-images/diavola.jpg',
         price: '310.00',
         is_available: true,
         likes_count: 27,
@@ -115,7 +115,7 @@ const categories = [
         name: 'Espresso tonic',
         description: 'Double espresso, tonic water, citrus zest',
         weight: '250 ml',
-        image_url: 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=900&q=80',
+        image_url: '/demo-images/espresso-tonic.jpg',
         price: '120.00',
         is_available: true,
         likes_count: 34,
@@ -145,7 +145,7 @@ const categories = [
         name: 'Basque cheesecake',
         description: 'Cream cheese, vanilla, caramelized top',
         weight: '160 g',
-        image_url: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=900&q=80',
+        image_url: '/demo-images/cheesecake.jpg',
         price: '165.00',
         is_available: true,
         likes_count: 23,
@@ -455,6 +455,8 @@ async function createCdpClient() {
 }
 
 async function navigateAndCapture(client, url, fileName, viewport, seedStorage = false) {
+  const baseUrl = `http://127.0.0.1:${vitePort}/`
+
   await client.send('Emulation.setDeviceMetricsOverride', {
     width: viewport.width,
     height: viewport.height,
@@ -470,19 +472,25 @@ async function navigateAndCapture(client, url, fileName, viewport, seedStorage =
     })
   }
 
-  if (seedStorage) {
-    await navigate(client, `http://127.0.0.1:${vitePort}/`)
-    await client.send('Runtime.evaluate', {
-      expression: `
-        localStorage.setItem('digital-menu-token', ${JSON.stringify(ownerToken)});
-        localStorage.setItem('digital-menu-admin', ${JSON.stringify(JSON.stringify(ownerAdmin))});
-        localStorage.setItem('digital-menu-company', ${JSON.stringify(JSON.stringify(company))});
-      `,
-    })
-  }
+  await navigate(client, baseUrl)
+  await client.send('Runtime.evaluate', {
+    expression: `
+      localStorage.setItem('digital-menu-language', 'en');
+      ${
+        seedStorage
+          ? `
+            localStorage.setItem('digital-menu-token', ${JSON.stringify(ownerToken)});
+            localStorage.setItem('digital-menu-admin', ${JSON.stringify(JSON.stringify(ownerAdmin))});
+            localStorage.setItem('digital-menu-company', ${JSON.stringify(JSON.stringify(company))});
+          `
+          : ''
+      }
+    `,
+  })
 
   await navigate(client, url)
-  await delay(2200)
+  await delay(700)
+  await waitForImages(client)
 
   const result = await client.send('Page.captureScreenshot', {
     format: 'png',
@@ -490,6 +498,53 @@ async function navigateAndCapture(client, url, fileName, viewport, seedStorage =
     captureBeyondViewport: false,
   })
   await fs.writeFile(path.join(screenshotsDir, fileName), Buffer.from(result.data, 'base64'))
+}
+
+async function waitForImages(client) {
+  await client.send('Runtime.evaluate', {
+    awaitPromise: true,
+    expression: `
+      new Promise((resolve) => {
+        const images = Array.from(document.images).filter((image) => image.src && !image.src.endsWith('/favicon.svg'));
+
+        if (images.length === 0) {
+          resolve(true);
+          return;
+        }
+
+        const isReady = () => images.every((image) => image.complete && image.naturalWidth > 0);
+
+        if (isReady()) {
+          resolve(true);
+          return;
+        }
+
+        const finish = () => {
+          if (isReady()) {
+            cleanup();
+            resolve(true);
+          }
+        };
+        const cleanup = () => {
+          window.clearTimeout(timeout);
+          images.forEach((image) => {
+            image.removeEventListener('load', finish);
+            image.removeEventListener('error', finish);
+          });
+        };
+        const timeout = window.setTimeout(() => {
+          cleanup();
+          resolve(false);
+        }, 9000);
+
+        images.forEach((image) => {
+          image.addEventListener('load', finish);
+          image.addEventListener('error', finish);
+        });
+      })
+    `,
+  })
+  await delay(400)
 }
 
 async function navigate(client, url) {

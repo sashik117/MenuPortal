@@ -3,6 +3,7 @@ import { AdminPage } from './views/AdminPage'
 import { ClientMenuPage } from './views/ClientMenuPage'
 import { DeliveryPage } from './views/DeliveryPage'
 import { FeedbackPage } from './views/FeedbackPage'
+import { FloatingLanguageSwitcher, LanguageProvider } from './i18n'
 import { LandingPage } from './views/LandingPage'
 import { PlansPage } from './views/PlansPage'
 
@@ -65,13 +66,16 @@ export default function App() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-[#f7f5f1] text-neutral-950">
-      {route.name === 'landing' && <LandingPage />}
-      {route.name === 'restaurant' && <ClientMenuPage slug={route.slug} />}
-      {route.name === 'delivery' && <DeliveryPage slug={route.slug} />}
-      {route.name === 'feedback' && <FeedbackPage slug={route.slug} />}
-      {route.name === 'plans' && <PlansPage companySlug={route.companySlug} />}
-      {route.name === 'admin' && <AdminPage />}
-    </main>
+    <LanguageProvider>
+      <main className="min-h-screen bg-[#f7f5f1] pb-16 text-neutral-950">
+        {route.name === 'landing' && <LandingPage />}
+        {route.name === 'restaurant' && <ClientMenuPage slug={route.slug} />}
+        {route.name === 'delivery' && <DeliveryPage slug={route.slug} />}
+        {route.name === 'feedback' && <FeedbackPage slug={route.slug} />}
+        {route.name === 'plans' && <PlansPage companySlug={route.companySlug} />}
+        {route.name === 'admin' && <AdminPage />}
+        <FloatingLanguageSwitcher />
+      </main>
+    </LanguageProvider>
   )
 }
