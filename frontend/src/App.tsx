@@ -67,7 +67,7 @@ export default function App() {
 
   return (
     <LanguageProvider>
-      <main className="min-h-screen bg-[#f7f5f1] pb-16 text-neutral-950">
+      <main className="min-h-screen bg-[#f5f5f7] pb-16 text-neutral-950">
         {route.name === 'landing' && <LandingPage />}
         {route.name === 'restaurant' && <ClientMenuPage slug={route.slug} />}
         {route.name === 'delivery' && <DeliveryPage slug={route.slug} />}

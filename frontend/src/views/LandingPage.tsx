@@ -110,7 +110,7 @@ export function LandingPage() {
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-5 sm:px-6 lg:py-8">
-      <header className="mb-8 flex items-center justify-between border-b border-neutral-300 pb-4">
+      <header className="mb-8 flex items-center justify-between border-b border-neutral-200 pb-4">
         <button
           type="button"
           onClick={() => navigateTo('/')}
@@ -130,14 +130,14 @@ export function LandingPage() {
           <button
             type="button"
             onClick={() => navigateTo('/r/demo-bistro')}
-            className="hidden h-10 rounded-md border border-neutral-300 bg-white px-3 text-sm font-semibold sm:block"
+            className="hidden h-10 rounded-lg border border-neutral-200 bg-white px-3 text-sm font-semibold shadow-sm transition hover:border-neutral-950 sm:block"
           >
             Демо меню
           </button>
           <button
             type="button"
             onClick={() => navigateTo('/admin')}
-            className="h-10 rounded-md bg-neutral-950 px-3 text-sm font-semibold text-white"
+            className="h-10 rounded-lg bg-neutral-950 px-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800"
           >
             Увійти
           </button>
@@ -151,7 +151,7 @@ export function LandingPage() {
           transition={{ duration: 0.25 }}
           className="py-4 lg:py-10"
         >
-          <p className="mb-4 inline-flex rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm font-semibold text-neutral-700">
+          <p className="mb-4 inline-flex rounded-lg border border-neutral-100 bg-white px-3 py-2 text-sm font-semibold text-neutral-700 shadow-[0_8px_30px_rgb(0,0,0,0.03)]">
             B2B платформа для ресторанів
           </p>
           <h1 className="max-w-3xl text-4xl font-semibold leading-tight text-neutral-950 sm:text-5xl">
@@ -169,7 +169,7 @@ export function LandingPage() {
             ].map(([label, Icon]) => (
               <div
                 key={label as string}
-                className="rounded-md border border-neutral-300 bg-white p-4"
+                className="rounded-lg border border-neutral-100 bg-white p-4 shadow-[0_8px_30px_rgb(0,0,0,0.025)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgb(0,0,0,0.05)]"
               >
                 <Icon className="mb-4 text-neutral-950" size={20} />
                 <p className="text-sm font-semibold text-neutral-900">{label as string}</p>
@@ -183,7 +183,7 @@ export function LandingPage() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.25, delay: 0.05 }}
           onSubmit={(event) => submitRegistration(event, registration.start_mode)}
-          className="rounded-md border border-neutral-300 bg-white p-4 shadow-sm sm:p-5"
+          className="w-full rounded-lg border border-neutral-100 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.035)] sm:p-8 lg:ml-auto lg:max-w-md"
         >
           <div className="mb-5">
             <p className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
@@ -220,7 +220,7 @@ export function LandingPage() {
               onChange={(event) =>
                 setRegistration({ ...registration, venue_type: event.target.value })
               }
-              className="h-11 w-full rounded-md border border-neutral-300 bg-white px-3 outline-none focus:border-neutral-950"
+              className="h-11 w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 text-sm text-neutral-900 outline-none transition-all duration-200 focus:border-neutral-950 focus:bg-white"
             >
               {venueTypes.map((type) => (
                 <option key={type.value} value={type.value}>
@@ -250,12 +250,12 @@ export function LandingPage() {
                 onChange={(event) =>
                   setRegistration({ ...registration, password: event.target.value })
                 }
-                className="h-11 w-full rounded-md border border-neutral-300 px-3 pr-11 outline-none transition focus:border-neutral-950"
+                className="h-11 w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 pr-11 text-sm text-neutral-900 outline-none transition-all duration-200 focus:border-neutral-950 focus:bg-white"
               />
               <button
                 type="button"
                 onClick={() => setIsPasswordVisible((value) => !value)}
-                className="absolute right-1 top-1 flex h-9 w-9 items-center justify-center rounded-md text-neutral-500"
+                className="absolute right-1 top-1 flex h-9 w-9 items-center justify-center rounded-md text-neutral-500 transition hover:text-neutral-950"
                 aria-label={isPasswordVisible ? 'Сховати пароль' : 'Показати пароль'}
               >
                 {isPasswordVisible ? <EyeOff size={18} /> : <Eye size={18} />}
@@ -263,21 +263,21 @@ export function LandingPage() {
             </span>
           </label>
 
-          <div className="mt-4 grid gap-2 sm:grid-cols-2">
+          <div className="mt-8 grid gap-3 sm:grid-cols-2">
             <motion.button
               type="button"
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.98 }}
               onClick={(event) => submitRegistration(event, 'trial')}
-              className="flex h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white"
+              className="flex h-11 items-center justify-center gap-2 rounded-lg bg-neutral-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-neutral-800"
             >
               <Sparkles size={16} />
               Спробувати тиждень
             </motion.button>
             <motion.button
               type="button"
-              whileTap={{ scale: 0.95 }}
+              whileTap={{ scale: 0.98 }}
               onClick={(event) => submitRegistration(event, 'pay_now')}
-              className="flex h-11 items-center justify-center gap-2 rounded-md border border-neutral-300 bg-white px-4 text-sm font-semibold"
+              className="flex h-11 items-center justify-center gap-2 rounded-lg border border-neutral-200 bg-white px-4 text-sm font-medium text-neutral-950 transition hover:border-neutral-950"
             >
               Заплатити зараз
               <ArrowRight size={16} />
@@ -292,7 +292,7 @@ export function LandingPage() {
 
       <section className="mt-10 grid gap-4 md:grid-cols-3">
         {plans.map(([title, text]) => (
-          <div key={title} className="rounded-md border border-neutral-300 bg-white p-5">
+          <div key={title} className="rounded-lg border border-neutral-100 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.025)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_36px_rgb(0,0,0,0.05)]">
             <Check className="mb-5 text-neutral-950" size={20} />
             <h3 className="text-xl font-semibold">{title}</h3>
             <p className="mt-2 text-sm leading-6 text-neutral-500">{text}</p>
@@ -300,7 +300,7 @@ export function LandingPage() {
         ))}
       </section>
 
-      <section className="mt-10 grid gap-6 rounded-md border border-neutral-300 bg-white p-4 sm:p-5 lg:grid-cols-[0.8fr_1fr]">
+      <section className="mt-10 grid gap-6 rounded-lg border border-neutral-100 bg-white p-5 shadow-[0_8px_30px_rgb(0,0,0,0.03)] sm:p-6 lg:grid-cols-[0.8fr_1fr]">
         <div>
           <p className="text-sm font-semibold uppercase tracking-[0.18em] text-neutral-500">
             Зворотний звʼязок
@@ -331,13 +331,13 @@ export function LandingPage() {
               required
               value={contact.message}
               onChange={(event) => setContact({ ...contact, message: event.target.value })}
-              className="min-h-28 w-full resize-none rounded-md border border-neutral-300 px-3 py-2 outline-none focus:border-neutral-950"
+            className="min-h-28 w-full resize-none rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 py-2 text-sm text-neutral-900 outline-none transition-all duration-200 focus:border-neutral-950 focus:bg-white"
             />
           </label>
           <motion.button
             type="submit"
             whileTap={{ scale: 0.95 }}
-            className="flex h-11 items-center justify-center gap-2 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white"
+            className="flex h-11 items-center justify-center gap-2 rounded-lg bg-neutral-950 px-4 text-sm font-medium text-white shadow-sm transition hover:bg-neutral-800"
           >
             <Mail size={16} />
             Надіслати
@@ -370,7 +370,7 @@ function TextField({
 }: TextFieldProps) {
   return (
     <label className="mb-3 block">
-      <span className="mb-1 block text-sm font-medium text-neutral-700">{label}</span>
+      <span className="mb-1.5 block text-xs font-medium text-neutral-600">{label}</span>
       <input
         required
         autoComplete={autoComplete}
@@ -378,7 +378,7 @@ function TextField({
         type={type}
         value={value}
         onChange={(event) => onChange(event.target.value)}
-        className="h-11 w-full rounded-md border border-neutral-300 px-3 outline-none transition focus:border-neutral-950"
+        className="h-11 w-full rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 text-sm text-neutral-900 outline-none transition-all duration-200 focus:border-neutral-950 focus:bg-white"
       />
     </label>
   )

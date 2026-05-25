@@ -321,7 +321,7 @@ export function ClientMenuPage({ slug }: { slug: string }) {
   }
 
   return (
-    <div className="min-h-screen w-full overflow-x-hidden bg-[#f7f5f1] lg:grid lg:grid-cols-[260px_1fr]">
+    <div className="min-h-screen w-full overflow-x-hidden bg-[#f5f5f7] lg:grid lg:grid-cols-[260px_1fr]">
       <DesktopSidebar
         activeCategory={activeCategory}
         activeSubcategory={activeSubcategory}
@@ -562,7 +562,7 @@ function MobileHeader({
   const category = categories.find((item) => item.slug === activeCategory)
 
   return (
-    <header className="sticky top-0 z-30 border-b border-neutral-200/90 bg-[#f7f5f1]/95 px-3 py-3 backdrop-blur lg:hidden">
+    <header className="sticky top-0 z-30 border-b border-neutral-200/90 bg-[#f5f5f7]/92 px-3 py-3 backdrop-blur lg:hidden">
       <div className="mb-3 flex items-center gap-3">
         <img
           src={company.avatar_url ?? '/favicon.svg'}
@@ -578,7 +578,7 @@ function MobileHeader({
         <button
           type="button"
           onClick={onInfo}
-          className="flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-white"
+          className="flex h-10 w-10 items-center justify-center rounded-lg border border-neutral-200 bg-white shadow-sm transition active:scale-[0.97]"
           aria-label="Інформація про заклад"
         >
           <MoreHorizontal size={18} />
@@ -590,13 +590,13 @@ function MobileHeader({
         <input
           value={query}
           onChange={(event) => onQuery(event.target.value)}
-          className="h-10 w-full rounded-md border border-neutral-300 bg-white pl-9 pr-3 text-sm outline-none focus:border-neutral-950"
+          className="h-11 w-full rounded-lg border border-neutral-200 bg-white pl-9 pr-3 text-sm outline-none shadow-sm transition focus:border-neutral-950"
           placeholder="Пошук"
         />
       </label>
 
       <LayoutGroup>
-        <div className="mb-2 flex max-w-full gap-4 overflow-x-auto overscroll-x-contain border-b border-neutral-200 pb-1">
+        <div className="edge-fade-x -mx-3 flex max-w-[calc(100%+1.5rem)] gap-6 overflow-x-auto overscroll-x-contain border-b border-neutral-100 px-3 pb-1 scrollbar-none">
           {categories.map((item) => (
             <NavChip
               key={item.slug}
@@ -617,7 +617,7 @@ function MobileHeader({
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.2 }}
-            className="flex max-w-full gap-2 overflow-x-auto overscroll-x-contain"
+            className="edge-fade-x -mx-3 flex max-w-[calc(100%+1.5rem)] gap-2 overflow-x-auto overscroll-x-contain bg-neutral-50/70 px-3 py-2 scrollbar-none"
           >
             <SubChip active={!activeSubcategory} onClick={() => onSubcategory(null)}>
               Усі
@@ -652,14 +652,14 @@ function NavChip({
       type="button"
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className={`relative h-10 shrink-0 px-0 text-xl font-bold ${
+      className={`relative h-10 shrink-0 px-0 text-base font-bold transition-colors ${
         active ? 'text-neutral-950' : 'text-neutral-500'
       }`}
     >
       {active && (
         <motion.span
           layoutId="active-main-category"
-          className="absolute bottom-0 left-0 right-0 h-0.5 bg-neutral-950"
+          className="absolute bottom-0 left-0 right-0 h-[2px] bg-neutral-950"
           transition={{ duration: 0.2, ease: 'easeOut' }}
         />
       )}
@@ -682,20 +682,20 @@ function SubChip({
       type="button"
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className={`relative h-8 shrink-0 overflow-hidden rounded-md border px-3 text-xs font-semibold ${
+      className={`relative h-8 shrink-0 overflow-hidden rounded-md border px-3 text-xs transition-all ${
         active
-          ? 'border-[#c8ded4] bg-[#e9f3ee] text-neutral-950'
-          : 'border-neutral-200 bg-white/70 text-neutral-500'
+          ? 'border-[#c8ded4] text-emerald-950'
+          : 'border-neutral-200 bg-white text-neutral-600'
       }`}
     >
       {active && (
         <motion.span
           layoutId="active-subcategory"
-          className="absolute inset-0 rounded-md border border-[#b9d5c8]"
+          className="absolute inset-0 rounded-md border border-[#b9d5c8] bg-[#e9f3ee]"
           transition={{ duration: 0.2, ease: 'easeOut' }}
         />
       )}
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 font-medium">{children}</span>
     </motion.button>
   )
 }
@@ -727,25 +727,29 @@ const DishCard = forwardRef<HTMLElement, DishCardProps>(function DishCard({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 10 }}
       transition={{ duration: 0.23, delay: Math.min(order * 0.03, 0.12) }}
-      className="grid w-full min-w-0 grid-cols-[112px_minmax(0,1fr)] gap-3 overflow-hidden rounded-md border border-neutral-200 bg-white p-2 shadow-sm sm:grid-cols-1 sm:gap-0 sm:p-0"
+      className="flex w-full min-w-0 select-none gap-3 rounded-lg border border-neutral-100 bg-white p-3.5 shadow-[0_2px_8px_rgba(0,0,0,0.025)] transition-shadow duration-200 hover:shadow-md sm:flex-col sm:gap-0 sm:p-0"
     >
-      <DishPhoto alt={dish.name} src={dish.image_url} className="self-start sm:rounded-b-none" />
-      <div className="flex min-w-0 flex-col p-1 sm:p-3">
+      <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-50 sm:h-auto sm:w-full sm:rounded-b-none">
+        <DishPhoto alt={dish.name} src={dish.image_url} className="h-full rounded-lg sm:rounded-b-none" />
+      </div>
+      <div className="flex min-w-0 flex-1 flex-col p-0 sm:p-3">
         <div className="flex items-start justify-between gap-2">
-          <h2 className="min-w-0 text-base font-semibold leading-snug">{dish.name}</h2>
-          <p className="shrink-0 whitespace-nowrap text-sm font-semibold">{formatPrice(dish.price)}</p>
+          <h2 className="min-w-0 truncate text-sm font-bold leading-snug text-neutral-950 sm:text-base">
+            {dish.name}
+          </h2>
+          <p className="shrink-0 whitespace-nowrap text-sm font-bold text-neutral-950">{formatPrice(dish.price)}</p>
         </div>
-        <p className="mt-1 line-clamp-2 text-sm leading-5 text-neutral-500">
+        <p className="mt-1 line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
           {dish.description}
         </p>
         {dish.weight && (
-          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
+          <p className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-neutral-400">
             {dish.weight}
           </p>
         )}
-        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+        <div className="mt-auto flex items-center justify-between gap-2 pt-2.5">
           {isNew(dish.created_at) ? (
-            <span className="text-xs font-semibold uppercase tracking-[0.14em] text-red-600">
+            <span className="text-[10px] font-extrabold uppercase tracking-[0.18em] text-red-600">
               новинка
             </span>
           ) : (
@@ -755,7 +759,7 @@ const DishCard = forwardRef<HTMLElement, DishCardProps>(function DishCard({
             <button
               type="button"
               onClick={onLike}
-              className="flex items-center gap-1 text-sm font-semibold text-neutral-700"
+              className="flex h-8 items-center gap-1 text-sm font-medium text-neutral-600 transition-colors hover:text-red-500"
               aria-label={`Лайк ${dish.name}`}
             >
               <motion.span
@@ -763,8 +767,8 @@ const DishCard = forwardRef<HTMLElement, DishCardProps>(function DishCard({
                 transition={{ duration: 0.15 }}
               >
                 <Heart
-                  size={18}
-                  className={isLiked ? 'fill-red-600 text-red-600' : 'text-neutral-600'}
+                  size={16}
+                  className={isLiked ? 'fill-red-600 text-red-600' : 'text-neutral-400'}
                 />
               </motion.span>
               <motion.span
@@ -778,14 +782,14 @@ const DishCard = forwardRef<HTMLElement, DishCardProps>(function DishCard({
             </button>
             <motion.button
               type="button"
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.92 }}
               onClick={onAddToCheck}
-              className="relative flex h-10 w-10 items-center justify-center rounded-md bg-neutral-950 text-white"
+              className="relative flex h-9 w-9 items-center justify-center rounded-lg bg-neutral-950 text-white shadow-sm transition-all hover:bg-neutral-800"
               aria-label={`Додати ${dish.name} у чек`}
             >
-              <Plus size={18} />
+              <Plus size={17} />
               {checkQuantity > 0 && (
-                <span className="absolute right-0 top-0 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-semibold text-white">
+                <span className="absolute -right-1 -top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-red-600 px-1 text-[11px] font-semibold text-white">
                   {checkQuantity}
                 </span>
               )}
@@ -1072,7 +1076,7 @@ function CheckButton({
       type="button"
       whileTap={{ scale: 0.95 }}
       onClick={onClick}
-      className="fixed bottom-4 right-4 z-40 flex h-12 items-center gap-3 rounded-md bg-neutral-950 px-4 text-sm font-semibold text-white shadow-xl"
+      className="fixed bottom-4 right-4 z-40 flex h-12 items-center gap-3 rounded-lg bg-neutral-950 px-4 text-sm font-semibold text-white shadow-xl transition-all"
     >
       <ReceiptText size={18} />
       <span>Чек</span>

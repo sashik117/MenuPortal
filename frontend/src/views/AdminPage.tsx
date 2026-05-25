@@ -1295,78 +1295,81 @@ function AdminDashboard({
       {isLoading && <StatusBlock label="Оновлюємо список" />}
       {error && <StatusBlock label="Не вийшло завантажити API" />}
 
-      <section className="rounded-md border border-neutral-300 bg-white p-2">
-        <div className="grid gap-2">
+      <section className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {dishes.map((dish) => (
             <article
               key={dish.id}
-              className="grid grid-cols-[104px_minmax(0,1fr)] gap-3 rounded-md border border-neutral-200 bg-white p-2 min-[390px]:grid-cols-[118px_minmax(0,1fr)] sm:grid-cols-[132px_minmax(0,1fr)]"
+              className="group relative flex gap-3 rounded-lg border border-neutral-100 bg-white p-3 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4"
             >
-              <div className="min-w-0">
-                <DishPhoto src={dish.image_url} alt={dish.name} className="self-start" />
-                <div className="mt-3 border-t border-neutral-100 pt-3">
-                  <p className="text-xs font-semibold uppercase tracking-[0.14em] text-neutral-500">
-                    Наявність
+              <div className="h-24 w-24 shrink-0 overflow-hidden rounded-lg border border-neutral-100 bg-neutral-100 sm:h-28 sm:w-28">
+                <DishPhoto src={dish.image_url} alt={dish.name} className="h-full rounded-lg" />
+              </div>
+              <div className="flex min-w-0 flex-1 flex-col justify-between">
+                <div className="min-w-0">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="truncate text-base font-bold leading-snug text-neutral-950">
+                        {dish.name}
+                      </p>
+                      <p className="mt-0.5 text-sm font-semibold leading-5 text-neutral-700">
+                        {dish.categoryName}
+                      </p>
+                      {dish.subcategoryName && (
+                        <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-[#47715f]">
+                          {dish.subcategoryName}
+                        </p>
+                      )}
+                    </div>
+                    <div className="shrink-0 text-right">
+                      <p className="whitespace-nowrap text-sm font-bold text-neutral-950">
+                        {formatPrice(dish.price)}
+                      </p>
+                      <p className="text-xs font-medium text-neutral-500">
+                        {dish.likes_count} likes
+                      </p>
+                    </div>
+                  </div>
+                  <p className="mt-2 line-clamp-2 text-xs leading-relaxed text-neutral-500 sm:text-sm">
+                    {dish.description || 'Склад не вказаний'}
                   </p>
+                  {dish.weight && (
+                    <p className="mt-1 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
+                      {dish.weight}
+                    </p>
+                  )}
+                </div>
+
+                <div className="mt-3 flex items-center justify-between gap-3 border-t border-neutral-100 pt-2">
                   <AvailabilityToggle
                     isAvailable={dish.is_available}
                     isPending={pendingId === dish.id}
                     label={dish.name}
                     onToggle={() => handleToggle(dish.id)}
                   />
-                </div>
-              </div>
-              <div className="min-w-0 p-1">
-                <div className="flex items-start justify-between gap-2">
-                  <div className="min-w-0">
-                    <p className="font-semibold leading-snug text-neutral-950">{dish.name}</p>
-                    <p className="mt-1 text-sm font-semibold leading-5 text-neutral-700">
-                      {dish.categoryName}
-                    </p>
-                    {dish.subcategoryName && (
-                      <p className="mt-0.5 text-xs font-semibold uppercase tracking-[0.12em] text-[#47715f]">
-                        {dish.subcategoryName}
-                      </p>
-                    )}
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <motion.button
+                      type="button"
+                      whileTap={{ scale: 0.94 }}
+                      onClick={() => {
+                        setDrawerDish(dish)
+                        setIsDrawerOpen(true)
+                      }}
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-neutral-500 transition-colors hover:bg-neutral-50 hover:text-neutral-950"
+                      aria-label={`Редагувати ${dish.name}`}
+                    >
+                      <Edit3 size={15} />
+                    </motion.button>
+                    <motion.button
+                      type="button"
+                      whileTap={{ scale: 0.94 }}
+                      onClick={() => setDeleteCandidate(dish)}
+                      className="flex h-8 w-8 items-center justify-center rounded-md text-red-500 transition-colors hover:bg-red-50 hover:text-red-600"
+                      aria-label={`Видалити ${dish.name}`}
+                    >
+                      <Trash2 size={15} />
+                    </motion.button>
                   </div>
-                  <div className="shrink-0 text-right">
-                    <p className="whitespace-nowrap text-sm font-semibold text-neutral-950">
-                      {formatPrice(dish.price)}
-                    </p>
-                    <p className="text-xs font-semibold text-neutral-500">
-                      {dish.likes_count} likes
-                    </p>
-                  </div>
                 </div>
-                <p className="mt-3 line-clamp-3 text-sm leading-5 text-neutral-500">
-                  {dish.description || 'Склад не вказаний'}
-                </p>
-                {dish.weight && (
-                  <p className="mt-2 text-xs font-semibold uppercase tracking-[0.12em] text-neutral-400">
-                    {dish.weight}
-                  </p>
-                )}
-              </div>
-              <div className="col-span-2 grid min-w-0 grid-cols-2 gap-2 border-t border-neutral-100 pt-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setDrawerDish(dish)
-                    setIsDrawerOpen(true)
-                  }}
-                  className="flex h-10 min-w-0 items-center justify-center gap-1.5 rounded-md border border-neutral-300 bg-white px-1.5 text-xs font-semibold min-[390px]:text-sm"
-                >
-                  <Edit3 size={14} className="shrink-0" />
-                  <span className="truncate">Редагувати</span>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setDeleteCandidate(dish)}
-                  className="flex h-10 min-w-0 items-center justify-center gap-1.5 rounded-md border border-red-200 bg-red-50 px-1.5 text-xs font-semibold text-red-700 min-[390px]:text-sm"
-                >
-                  <Trash2 size={14} className="shrink-0" />
-                  <span className="truncate">Видалити</span>
-                </button>
               </div>
             </article>
           ))}
@@ -1375,7 +1378,6 @@ function AdminDashboard({
               Страв ще нема. Відкрий “Дії” і додай першу позицію.
             </p>
           )}
-        </div>
       </section>
 
       <AnimatePresence>
@@ -1464,25 +1466,25 @@ function AvailabilityToggle({
   onToggle: () => void
 }) {
   return (
-    <div className="mt-2 flex flex-col items-start gap-1">
+    <div className="flex items-center gap-2">
       <motion.button
         type="button"
-        whileTap={{ scale: 0.95 }}
+        whileTap={{ scale: 0.92 }}
         disabled={isPending}
         onClick={onToggle}
-        className={`relative h-7 w-14 rounded-full border transition ${
+        className={`relative h-5 w-9 rounded-full border transition-colors duration-100 ${
           isAvailable ? 'border-neutral-950 bg-neutral-950' : 'border-neutral-300 bg-neutral-200'
         }`}
         aria-label={`Перемкнути ${label}`}
       >
         <motion.span
           layout
-          animate={{ x: isAvailable ? 28 : 4 }}
-          transition={{ duration: 0.22 }}
-          className="absolute left-0 top-[3px] h-5 w-5 rounded-full bg-white shadow-sm"
+          animate={{ x: isAvailable ? 18 : 3 }}
+          transition={{ duration: 0.14 }}
+          className="absolute left-0 top-[2px] h-3.5 w-3.5 rounded-full bg-white shadow-sm"
         />
       </motion.button>
-      <span className="text-xs font-semibold leading-4 text-neutral-700">
+      <span className="text-[11px] font-medium leading-4 text-neutral-600">
         {isAvailable ? 'Є в меню' : 'Приховано'}
       </span>
     </div>
